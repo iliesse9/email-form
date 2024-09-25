@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدخال البريد الإلكتروني</title>
+</head>
+<body>
+    <form id="emailForm">
+        <label for="email">أدخل بريدك الإلكتروني:</label>
+        <input type="email" id="email" name="email" required>
+        <button type="submit">إرسال</button>
+    </form>
+
+    <script>
+        document.getElementById('emailForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var email = document.getElementById('email').value;
+            var link = new URLSearchParams(window.location.search).get('redirect');
+
+            if (email && link) {
+                var formData = new FormData();
+                formData.append('1FAIpQLSfE0wKtIxGvz4VfmJndZnPvsUQpxGpxyqNpj598MdV4XPjzVA', email);
+                formData.append('entry.LINK_ENTRY_ID', link);
+
+                fetch('https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = link;
+                    } else {
+                        alert('حدث خطأ أثناء إرسال البريد الإلكتروني.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('حدث خطأ أثناء إرسال البريد الإلكتروني.');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
